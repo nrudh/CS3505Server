@@ -37,7 +37,6 @@ int main(int argc, char *argv[])
         //Queries
         dispAllUsers(query);
 
-
         string sent_user = "Court";
         string sent_password = "000";
         bool userAdded = addUser(sent_user, sent_password, query);
