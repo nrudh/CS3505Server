@@ -4,22 +4,26 @@
 #define MYRUNNABLE_H
 
 #include <QRunnable>
-#include <QtNetwork/QTcpSocket>
-//#include <QTcpSocket>
+#include <QTcpSocket>
 #include <QDebug>
+#include <string>
+#include <QList>
+#include "database.h"
+#include <QMutexLocker>
 
 
 class MyRunnable : public QRunnable
 {
 public:
-    MyRunnable();
+    MyRunnable(DataBase *db);
 
 protected:
     void run();
 
 public:
     qintptr socketDescriptor;
-
+    DataBase *db;
+    QMutex *mutex;
 };
 
 #endif // MYRUNNABLE_H

@@ -3,10 +3,10 @@
 #ifndef MYSERVER_H
 #define MYSERVER_H
 
-#include <QtNetwork/QTcpServer>
-//#include <QTcpServer>
+#include <QTcpServer>
 #include <QThreadPool>
 #include <QDebug>
+#include "database.h"
 
 class MyServer : public QTcpServer
 {
@@ -24,6 +24,7 @@ public slots:
 
 private:
     QThreadPool *pool;
+    DataBase *db;
 };
 
 #endif // MYSERVER_H

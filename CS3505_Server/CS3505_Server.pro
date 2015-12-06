@@ -18,7 +18,8 @@ TEMPLATE = app
 SOURCES += main.cpp \
     myrunnable.cpp \
     myserver.cpp \
-    mysocket.cpp
+    mysocket.cpp \
+    database.cpp
 
 INCLUDEPATH += "C:\Program Files\MySQL\MySQL Server 5.7\lib"
 
@@ -27,4 +28,5 @@ INCLUDEPATH += "C:\Program Files\MySQL\MySQL Server 5.7\lib"
 HEADERS += \
     myrunnable.h \
     myserver.h \
-    mysocket.h
+    mysocket.h \
+    database.h

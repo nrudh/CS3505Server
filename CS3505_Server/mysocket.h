@@ -19,6 +19,7 @@ public slots:
     void disconnected();
     void bytesWritten(qint64 bytes);
     void readyRead();
+    qint64 write(char *data);
 
 private:
     QTcpSocket *socket;

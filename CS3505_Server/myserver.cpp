@@ -7,6 +7,7 @@ MyServer::MyServer(QObject *parent) : QTcpServer(parent)
 {
     pool = new QThreadPool(this);
     pool->setMaxThreadCount(5);
+    db = new DataBase();
 }
 
 void MyServer::startServer()
@@ -23,7 +24,7 @@ void MyServer::startServer()
 
 void MyServer::incomingConnection(qintptr handle)
 {
-    MyRunnable *task = new MyRunnable();
+    MyRunnable *task = new MyRunnable(db);
     task->setAutoDelete(true);
 
     task->socketDescriptor = handle;

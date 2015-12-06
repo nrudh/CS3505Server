@@ -29,9 +29,6 @@ void MySocket::doConnect()
 void MySocket::connected()
 {
     qDebug() << "connected...";
-
-    // Hey server, tell me about you.
-    socket->write("HEAD / HTTP/1.0\r\n\r\n\r\n\r\n");
 }
 
 void MySocket::disconnected()
@@ -50,4 +47,11 @@ void MySocket::readyRead()
 
     // read the data from the socket
     qDebug() << socket->readAll();
+}
+
+qint64 MySocket::write(char *data)
+{
+    qint64 hold = socket->write(data);
+    socket->waitForBytesWritten();
+    return hold;
 }
