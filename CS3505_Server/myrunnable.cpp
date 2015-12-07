@@ -26,7 +26,9 @@ void MyRunnable::run()
     //May need to create (monitor, mutex, semephore) for this
     if(socket.bytesAvailable() > 0)
     {
-           std::string incomming = socket.readAll().toStdString();
+           QByteArray qba = socket.readAll();
+           QString str(qba);
+           std::string incomming = str.toStdString();
 
            while(incomming.length() > 0)
            {
