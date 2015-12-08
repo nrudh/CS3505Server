@@ -72,14 +72,11 @@ std::string DataBase::dispAllUsers()
         // Select * query
         if(query->exec("SELECT * from User_table"))
         {
-           //cout << "Contents of 'User_table' table" << endl;
-
            while(query->next())
            {
                    QString id = query->value(0).toString();
                    QString user = query->value(1).toString();
                    QString password = query->value(2).toString();
-                   //qDebug() << id << " " << username << " " << password << endl;
                    str += id.toStdString() + " " + user.toStdString() + " " + password.toStdString() + "\r\n";
            }
         }
@@ -106,7 +103,6 @@ bool DataBase::addUser(std::string sent_user, std::string sent_password)
             query->bindValue(":password", QString::fromStdString(sent_password));
             if(query->exec())
             {
-                //cout << endl << "Inserted user: " << sent_user << " " << query->numRowsAffected() << endl << endl;
                 if(query->numRowsAffected() > 0)
                      userAdded = true;
             }
@@ -124,16 +120,13 @@ bool DataBase::userExists(std::string sent_user, std::string sent_password)
         query->prepare("SELECT id FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'");
         if(query->exec())
         {
-            //cout << "Found user: " << sent_user << " " <<query->size() << endl << endl;
             if(query->numRowsAffected() > 0)
             {
                 query->first();
-                //std::cout << "Found user: " << sent_user << " " << query->value(0).toString().toStdString() << std::endl;
+                db->close();
                 return true;
             }
         }
-        else
-            //cout << "Query failed!" << endl;
         db->close();
         return false;
     }
@@ -148,12 +141,9 @@ bool DataBase::deleteUser(std::string sent_user, std::string sent_password)
         query->exec("SET FOREIGN_KEY_CHECKS = 0;");
         if(query->exec("DELETE FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'"))
         {
-            //cout << "Deleted user: " << sent_user << " " << query->numRowsAffected() << endl << endl;
             if(query->numRowsAffected() > 0)
                 deleted = true;
         }
-        //else
-            //cout << "Delete failed!" << endl;
         db->close();
         return deleted;
     }
@@ -198,17 +188,10 @@ bool DataBase::updateScore(std::string sent_user, std::string sent_password, std
     {
         // Query to update a level score
         bool updatedScore = false;
-        //std::cout << "REPLACE INTO Level" + level << "_Table SET id = (SELECT id From User_Table Where user = '" << sent_user << "' AND password = '" << sent_password << "'), score = " << score << std::endl;
         if(query->exec("REPLACE INTO Level" + QString::fromStdString(level) + "_Table SET id = (SELECT id From User_Table Where user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'), score = " + QString::fromStdString(score)))
         {
-            //cout << "Inserted score :" << score << " for user: " << sent_user << " into Level" << level << "_Table" << endl << endl;
             if(query->numRowsAffected() > 0)
                 updatedScore = true;
-        }
-        else
-        {
-            //cout << "level update failed!" << endl;
-            //cout << query->lastQuery().toStdString() << endl;
         }
         db->close();
         return updatedScore;

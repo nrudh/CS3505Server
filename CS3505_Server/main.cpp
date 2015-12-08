@@ -23,13 +23,13 @@ int main(int argc, char *argv[])
 
     //create client for test
     MySocket socket,socket2;
-    socket.doConnect();
+    //socket.doConnect();
     //socket.write("login McKay 12345");
     //socket.write("update Scott 10101 3 99");
-    //socket.write("scores Scott 10101");
+    //socket.write("scores McKay 12345;scores Nick 56789;");
     //socket.write("display");
     //socket.write("adduser Amelia 22222");
-    socket.write("delete Amelia 22222");
+    //socket.write("delete Amelia 22222");
 
     //socket2.doConnect();
     //socket2.write("update McKay 12345 2 12");
