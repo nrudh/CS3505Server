@@ -77,7 +77,7 @@ std::string DataBase::dispAllUsers()
                    QString id = query->value(0).toString();
                    QString user = query->value(1).toString();
                    QString password = query->value(2).toString();
-                   str += id.toStdString() + " " + user.toStdString() + " " + password.toStdString() + "\r\n";
+                   str += id.toStdString() + " " + user.toStdString() + " " + password.toStdString() + "\n";
            }
         }
         else
@@ -97,14 +97,17 @@ bool DataBase::addUser(std::string sent_user, std::string sent_password)
     {
         if(userExists(sent_user, sent_password) == false)
         {
-            query->prepare("INSERT INTO User_table (user, password) "
-                          "VALUES (:user, :password)");
-            query->bindValue(":user", QString::fromStdString(sent_user));
-            query->bindValue(":password", QString::fromStdString(sent_password));
-            if(query->exec())
+            if(db->open())
             {
-                if(query->numRowsAffected() > 0)
-                     userAdded = true;
+                query->prepare("INSERT INTO User_table (user, password) "
+                              "VALUES (:user, :password)");
+                query->bindValue(":user", QString::fromStdString(sent_user));
+                query->bindValue(":password", QString::fromStdString(sent_password));
+                if(query->exec())
+                {
+                    if(query->numRowsAffected() > 0)
+                         userAdded = true;
+                }
             }
         }
     }
@@ -117,8 +120,8 @@ bool DataBase::userExists(std::string sent_user, std::string sent_password)
     if(db->open())
     {
         // Query if user and password exists
-        query->prepare("SELECT id FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'");
-        if(query->exec())
+        //query->prepare("SELECT id FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'");
+        if(query->exec("SELECT id FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'"))
         {
             if(query->numRowsAffected() > 0)
             {
@@ -157,10 +160,10 @@ std::string DataBase::getUserState(std::string sent_user, std::string sent_passw
         std::string score1, score2, score3;
         if(query->exec("SELECT l1.score FROM User_table us, level1_table l1 WHERE us.id = l1.id AND us.user = '" + QString::fromStdString(sent_user) +  "'" + " AND us.password = '" + QString::fromStdString(sent_password) + "'"))
         {
-            if(query->numRowsAffected() > 0){
+            //if(query->numRowsAffected() > 0){
                 query->first();
                 score1 = query->value(0).toString().toStdString();
-            }
+            //}
         }
         if(query->exec("SELECT l2.score FROM User_table us, level2_table l2 WHERE us.id = l2.id AND us.user = '" + QString::fromStdString(sent_user) +  "'" + " AND us.password = '" + QString::fromStdString(sent_password) + "'"))
         {

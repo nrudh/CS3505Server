@@ -13,6 +13,7 @@ TARGET = CS3505_Server
 CONFIG   += console
 CONFIG   -= app_bundle
 
+QTPLUGIN += QSQLMYSQL
 TEMPLATE = app
 
 SOURCES += main.cpp \
@@ -21,9 +22,7 @@ SOURCES += main.cpp \
     mysocket.cpp \
     database.cpp
 
-INCLUDEPATH += "C:\Program Files\MySQL\MySQL Server 5.7\lib"
-
-
+INCLUDEPATH += "C:\Qt\5.5\msvc2013_64\plugins\sqldrivers"
 
 HEADERS += \
     myrunnable.h \
