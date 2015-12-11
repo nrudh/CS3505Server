@@ -48,9 +48,17 @@ void MyRunnable::run()
                    {
                        command.push_back(incomming.substr(0,incomming.find_first_of(' ')));
                        incomming = incomming.substr(incomming.find_first_of(' ')+1);
+                       if(incomming.find("\r\n")!=-1)
+                       {
+                           incomming=incomming.substr(0,incomming.find("\r\n")-3);
+                       }
                    }
                    else
                    {
+                       if(incomming.find("\r\n")!=-1)
+                       {
+                           incomming=incomming.substr(0,incomming.find("\r\n")-3);
+                       }
                        command.push_back(incomming);
                        incomming.clear();
                    }

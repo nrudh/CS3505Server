@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     MySocket socket,socket2;
     //socket.doConnect();
     //socket.write("login McKay 12345");
-    //socket.write("update Scott 10101 3 99");
+    //socket.write("update Nick 56789 3 99");
     //socket.write("scores McKay 12345;scores Nick 56789;");
     //socket.write("display");
     //socket.write("adduser Amelia 22222");

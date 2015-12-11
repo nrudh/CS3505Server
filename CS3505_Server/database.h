@@ -5,6 +5,7 @@
 #include <QPluginLoader>
 #include <QCoreApplication>
 #include <QtSql>
+#include <qstring.h>
 
 class DataBase
 {

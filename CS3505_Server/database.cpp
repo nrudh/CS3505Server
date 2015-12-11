@@ -70,7 +70,8 @@ std::string DataBase::dispAllUsers()
     if(db->open())
     {
         // Select * query
-        if(query->exec("SELECT * from User_table"))
+        query->prepare("SELECT * from User_table");
+        if(query->exec())
         {
            while(query->next())
            {
@@ -97,14 +98,18 @@ bool DataBase::addUser(std::string sent_user, std::string sent_password)
     {
         if(userExists(sent_user, sent_password) == false)
         {
-            query->prepare("INSERT INTO User_table (user, password) "
-                          "VALUES (:user, :password)");
-            query->bindValue(":user", QString::fromStdString(sent_user));
-            query->bindValue(":password", QString::fromStdString(sent_password));
-            if(query->exec())
+            if(db->open())
             {
-                if(query->numRowsAffected() > 0)
-                     userAdded = true;
+                query->prepare("INSERT INTO User_table (user, password) "
+                              "VALUES (:user, :password)");
+                query->bindValue(":user", QString::fromStdString(sent_user));
+                query->bindValue(":password", QString::fromStdString(sent_password));
+                if(query->exec())
+                {
+                    qDebug() << query->executedQuery();
+                    if(query->numRowsAffected() > 0)
+                         userAdded = true;
+                }
             }
         }
     }
@@ -117,15 +122,20 @@ bool DataBase::userExists(std::string sent_user, std::string sent_password)
     if(db->open())
     {
         // Query if user and password exists
-        query->prepare("SELECT id FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'");
-        if(query->exec())
+        //query->prepare("SELECT id FROM User_table WHERE user = 'Nick' AND password = 56789");
+        //query->bindValue(":user",QString::fromStdString(sent_user));
+        //query->bindValue(":password",QString::fromStdString(sent_password));
+        if(query->exec("SELECT id FROM User_table WHERE user = '" + QString::fromStdString(sent_user) + "' AND password = '" + QString::fromStdString(sent_password) + "'"))
         {
+            qDebug() << query->executedQuery();
             if(query->numRowsAffected() > 0)
             {
                 query->first();
                 db->close();
                 return true;
             }
+            else
+                qDebug() << query->lastError().text();
         }
         db->close();
         return false;
