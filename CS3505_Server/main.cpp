@@ -22,12 +22,12 @@ int main(int argc, char *argv[])
     server.startServer();
 
     //create client for test
-    //MySocket socket,socket2;
-    //socket.doConnect();
+    MySocket socket,socket2;
+    socket.doConnect();
     //socket.write("login McKay 12345");
     //socket.write("update Nick 56789 3 99");
     //socket.write("scores McKay 12345;scores Nick 56789;");
-    //socket.write("display");
+    socket.write("display");
     //socket.write("adduser Scott 01010");
     //socket.write("delete yoyo 10");
 

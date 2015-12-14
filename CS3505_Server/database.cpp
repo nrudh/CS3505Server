@@ -74,14 +74,13 @@ std::string DataBase::dispAllUsers()
         query->prepare("SELECT * from User_table");
         if(query->exec())
         {
-            std::string buildStr;
            while(query->next())
            {
                    QString id = query->value(0).toString();
                    QString user = query->value(1).toString();
                    QString password = query->value(2).toString();
-                   buildStr.push_back("user: " + user.toStdString() + " passwrod: " + password.toStdString() + " " + getUserState(user.toStdString(), password.toStdString(), 1) + "\n");
-                   str += id.toStdString() + " " + user.toStdString() + " " + password.toStdString() + "\n";
+                   str += "user: " + user.toStdString() + " passwrod: " + password.toStdString() + " " + getUserState(user.toStdString(), password.toStdString(), 1) + "\n";
+                   //str += id.toStdString() + " " + user.toStdString() + " " + password.toStdString() + "\n";
            }
         }
         else
@@ -91,8 +90,7 @@ std::string DataBase::dispAllUsers()
         }
         db->close();
     }
-    //return str;
-    return buildStr;
+    return str;
 }
 
 bool DataBase::addUser(std::string sent_user, std::string sent_password)
@@ -243,3 +241,4 @@ std::string DataBase::getUserState(std::string sent_user, std::string sent_passw
         return "Level1 " + score1 + " Level2 " + score2 + " Level3 " + score3;
     }
 
+}
