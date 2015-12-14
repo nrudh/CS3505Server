@@ -20,6 +20,7 @@ public:
     bool userExists(std::string sent_user, std::string sent_password);
     bool deleteUser(std::string sent_user, std::string sent_password);
     std::string getUserState(std::string sent_user, std::string sent_password);
+    std::string getUserState(std::string sent_user, std::string sent_password, int i);
     bool updateScore(std::string sent_user, std::string sent_password, std::string level, std::string score);
 };
 

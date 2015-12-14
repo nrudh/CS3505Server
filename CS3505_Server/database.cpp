@@ -66,6 +66,7 @@ std::string DataBase::runCommand(QList<std::string> command)
 
 std::string DataBase::dispAllUsers()
 {
+    std::vector<std::string> usersVect;
     std::string str;
     if(db->open())
     {
@@ -73,11 +74,13 @@ std::string DataBase::dispAllUsers()
         query->prepare("SELECT * from User_table");
         if(query->exec())
         {
+            std::string buildStr;
            while(query->next())
            {
                    QString id = query->value(0).toString();
                    QString user = query->value(1).toString();
                    QString password = query->value(2).toString();
+                   buildStr.push_back("user: " + user.toStdString() + " passwrod: " + password.toStdString() + " " + getUserState(user.toStdString(), password.toStdString(), 1) + "\n");
                    str += id.toStdString() + " " + user.toStdString() + " " + password.toStdString() + "\n";
            }
         }
@@ -88,7 +91,8 @@ std::string DataBase::dispAllUsers()
         }
         db->close();
     }
-    return str;
+    //return str;
+    return buildStr;
 }
 
 bool DataBase::addUser(std::string sent_user, std::string sent_password)
@@ -208,4 +212,34 @@ bool DataBase::updateScore(std::string sent_user, std::string sent_password, std
         return updatedScore;
     }
 }
+
+std::string DataBase::getUserState(std::string sent_user, std::string sent_password, int i)
+{
+    {
+        // Query to get the state of a user
+        std::string score1, score2, score3;
+        if(query->exec("SELECT l1.score FROM User_table us, level1_table l1 WHERE us.id = l1.id AND us.user = '" + QString::fromStdString(sent_user) +  "'" + " AND us.password = '" + QString::fromStdString(sent_password) + "'"))
+        {
+            //if(query->numRowsAffected() > 0){
+                query->first();
+                score1 = query->value(0).toString().toStdString();
+            //}
+        }
+        if(query->exec("SELECT l2.score FROM User_table us, level2_table l2 WHERE us.id = l2.id AND us.user = '" + QString::fromStdString(sent_user) +  "'" + " AND us.password = '" + QString::fromStdString(sent_password) + "'"))
+        {
+            if(query->numRowsAffected() > 0){
+                query->first();
+                score2 = query->value(0).toString().toStdString();
+            }
+        }
+        if(query->exec("SELECT l3.score FROM User_table us, level3_table l3 WHERE us.id = l3.id AND us.user = '" + QString::fromStdString(sent_user) +  "'" + " AND us.password = '" + QString::fromStdString(sent_password) + "'"))
+        {
+            if(query->numRowsAffected() > 0){
+                query->first();
+                score3 = query->value(0).toString().toStdString();
+            }
+        }
+
+        return "Level1 " + score1 + " Level2 " + score2 + " Level3 " + score3;
+    }
 
